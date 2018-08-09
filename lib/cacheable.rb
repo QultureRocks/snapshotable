@@ -10,24 +10,22 @@ module Cacheable
 
       self.attributes_to_cache = []
       self.attributes_to_ignore_on_diff = []
+
+      unless instance_methods.include?(:cache!)
+        def cache!
+          CacheAttributes.new(self).call
+        end
+      end
     end
   end
 
   module ClassMethods
     def cache(*attributes)
-      attributes_to_cache = attributes.map(&:to_sym)
-      self.attributes_to_cache = attributes_to_cache
+      self.attributes_to_cache = attributes
     end
 
     def cache_ignore_diff(*attributes)
-      attributes_to_ignore_on_diff = attributes.map(&:to_sym)
-      self.attributes_to_ignore_on_diff = attributes_to_ignore_on_diff
-    end
-
-    protected
-
-    def cache!
-      CacheAttributes.new(self).call
+      self.attributes_to_ignore_on_diff = attributes
     end
   end
 end
