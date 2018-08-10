@@ -135,7 +135,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
 
     context 'when has custom attributes' do
       let(:attributes_to_save_on_snapshot) { [] }
-      let(:custom_snapshot_attributes) { [ role_in_kingdom: :role] }
+      let(:custom_snapshot_attributes) { [role_in_kingdom: :role] }
 
       before do
         allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
