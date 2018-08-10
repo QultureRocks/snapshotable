@@ -1,4 +1,3 @@
-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'cacheable_models/version'
@@ -23,7 +22,7 @@ Gem::Specification.new do |s|
       'public gem pushes.'
   end
 
-  s.files = Dir['README.md', 'lib/**/*']
+  s.files = Dir['LICENSE.txt', 'README.md', 'lib/**/*']
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'activesupport', '>= 4.1'
@@ -31,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bundler', '~> 1.16'
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'pry-rails'
 end

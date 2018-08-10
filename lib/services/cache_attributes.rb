@@ -15,12 +15,12 @@ module CacheableModels
     def cache_attrs
       cached_attributes = {}
 
-      cached_attributes[:cache] = extract_attributes(record_cached_attrs, record)
+      cached_attributes[:cache] = extract_attributes(record_cached_attrs, record) if record_cached_attrs.any?
 
-      deep_cached_attrs.each do |association_name, attributes|
+      deep_cached_attrs&.each do |association_name, attributes|
         association = record.send(association_name)
 
-        cached_attributes["#{association_name}_cache"] = if association.respond_to?(:map)
+        cached_attributes["#{association_name}_cache"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
                                                            association.map { |model| extract_attributes(attributes, model) }
                                                          else
                                                            extract_attributes(attributes, association)

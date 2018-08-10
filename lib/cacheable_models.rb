@@ -30,5 +30,5 @@ module CacheableModels
 end
 
 ActiveSupport.on_load :active_record do
-  include Cacheable
+  include CacheableModels
 end

@@ -1,4 +1,9 @@
 require 'bundler/setup'
+require 'pry-rails'
+
+require 'active_support'
+require 'active_support/core_ext/string/strip'
+
 require 'cacheable_models'
 
 RSpec.configure do |config|
