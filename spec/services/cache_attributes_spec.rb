@@ -1,7 +1,7 @@
 RSpec.describe CacheableModels::CacheAttributes do
   let(:record) { double }
 
-  let(:fake_model) {
+  let(:fake_model) do
     {
       id: 1,
       name: 'Jon Snow',
@@ -24,8 +24,7 @@ RSpec.describe CacheableModels::CacheAttributes do
         }
       ]
     }
-  }
-
+  end
 
   before do
     allow(record).to receive(:attributes_to_cache).and_return(attributes_to_cache)
@@ -36,15 +35,17 @@ RSpec.describe CacheableModels::CacheAttributes do
     subject { described_class.new(record).call }
 
     context 'when only has first-level caching' do
-      let(:attributes_to_cache) { [:id, :name ]}
+      let(:attributes_to_cache) { %i[id name] }
 
       before do
+        allow(record).to receive(:custom_cache_attributes).and_return([])
+
         attributes_to_cache.each do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
       end
 
-      it "returns an object with cache set" do
+      it 'returns an object with cache set' do
         expect(subject).to have_key(:cache)
       end
 
@@ -60,9 +61,11 @@ RSpec.describe CacheableModels::CacheAttributes do
     end
 
     context 'when has second-level caching' do
-      let(:attributes_to_cache) { [mother: [:name], father: [:id]]}
+      let(:attributes_to_cache) { [mother: [:name], father: [:id]] }
 
       before do
+        allow(record).to receive(:custom_cache_attributes).and_return([])
+
         attributes_to_cache.first.each do |association_name, attributes|
           association = fake_model[association_name]
 
@@ -75,8 +78,8 @@ RSpec.describe CacheableModels::CacheAttributes do
         end
       end
 
-      it 'returns and object with attribute_cache set' do
-        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map{|key| "#{key}_cache"})
+      it 'returns an object with attribute_cache set' do
+        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map { |key| "#{key}_cache" })
       end
 
       it 'returns the cache with only the asked parameters' do
@@ -96,6 +99,8 @@ RSpec.describe CacheableModels::CacheAttributes do
       let(:attributes_to_cache) { [houses: [:name]] }
 
       before do
+        allow(record).to receive(:custom_cache_attributes).and_return([])
+
         attributes_to_cache.first.each do |association_name, attributes|
           multiple_association = fake_model[association_name]
 
@@ -111,8 +116,8 @@ RSpec.describe CacheableModels::CacheAttributes do
         end
       end
 
-      it 'returns and object with attribute_cache set' do
-        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map{|key| "#{key}_cache"})
+      it 'returns an object with attribute_cache set' do
+        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map { |key| "#{key}_cache" })
       end
 
       it 'returns the cache with only the asked parameters' do
@@ -126,6 +131,33 @@ RSpec.describe CacheableModels::CacheAttributes do
               expect(cache[attribute]).to be(fake_model[association_name][index][attribute])
             end
           end
+        end
+      end
+    end
+
+    context 'when has custom attributes' do
+      let(:attributes_to_cache) { [] }
+      let(:custom_cache_attributes) { {role_in_kingdom: :role} }
+
+      before do
+        allow(record).to receive(:custom_cache_attributes).and_return(custom_cache_attributes)
+
+        custom_cache_attributes.values.each do |attribute|
+          allow(record).to receive(attribute).and_return(fake_model[attribute])
+        end
+      end
+
+      it 'returns an object with the custom attribute set' do
+        expect(subject.keys).to match_array(custom_cache_attributes.keys)
+      end
+
+      it 'returns the cache with only the asked parameters' do
+        expect(subject.keys).to match_array(custom_cache_attributes.keys)
+      end
+
+      it 'returns the same parameters as the record' do
+        custom_cache_attributes.each do |custom_name, attribute|
+          expect(subject[custom_name]).to be(fake_model[attribute])
         end
       end
     end
