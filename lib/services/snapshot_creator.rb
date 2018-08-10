@@ -17,9 +17,9 @@ module Snapshotable
     def snapshot_attrs
       snapshot = {}
 
-      add_custom_attributes(snapshot) if custom_snapshot_attributes.any?
+      add_custom_attributes(snapshot) if custom_snapshot_attributes.present?
 
-      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
+      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.present?
 
       add_deep_snapshot_objects(snapshot)
 
@@ -27,7 +27,7 @@ module Snapshotable
     end
 
     def add_custom_attributes(snapshot)
-      record.custom_snapshot_attributes.each do |key, attribute|
+      custom_snapshot_attributes.each do |key, attribute|
         snapshot[key] = record.send(attribute)
       end
     end
@@ -53,15 +53,15 @@ module Snapshotable
     end
 
     def record_snapshot_attrs
-      @record_snapshot_attrs ||= record.attributes_to_save_on_snapshot.select { |attr| attr.is_a? Symbol }
+      @record_snapshot_attrs ||= record.class.attributes_to_save_on_snapshot.select { |attr| attr.is_a? Symbol }
     end
 
     def deep_snapshot_attrs
-      @deep_snapshot_attrs ||= record.attributes_to_save_on_snapshot.select { |attr| attr.is_a? Hash }.first
+      @deep_snapshot_attrs ||= record.class.attributes_to_save_on_snapshot.select { |attr| attr.is_a? Hash }.first
     end
 
     def custom_snapshot_attributes
-      @custom_snapshot_attributes ||= record.custom_snapshot_attributes
+      @custom_snapshot_attributes ||= record.class.custom_snapshot_attributes.first
     end
   end
 end
