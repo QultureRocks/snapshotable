@@ -1,8 +1,7 @@
+
 # CacheableModels
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cacheable_models`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem is intended to work as a model history, saving important information about it (and its relations) over time.
 
 ## Installation
 
@@ -20,24 +19,96 @@ Or install it yourself as:
 
     $ gem install cacheable_models
 
+## How it works
+
+CacheableModels adds a `cache!` method to the model that creates a new record on the database using static information, so if something changes, it doesn't affect the cache.
+Record are only created if something that is being saved to the cache has changed. We recommend running a daily or weekly task to generate new cached instances, but nothing stops you from creating one every time something changes.
+
 ## Usage
 
-TODO: Write usage instructions here
+1. Create cache model and migration
+ 
+ You should create a new model called `<model_to_cache>Cache` with at least a jsonb `cache` attribute and it must `belongs_to` the original model.
+ If you wish to save information about its associations you should add a jsonb attribute `<association_name>_cache`.
+ 
+Example:
+- Migration
 
-## Development
+```
+class CreateEmployeeCache < ActiveRecord::Migration[5.1]
+  def change
+    create_table :employee_caches do |t|
+      t.references :employee, index: true, null: false, foreign_key: true
+      t.string :company_name
+      t.jsonb :cache, null: false
+      t.jsonb :supervisor_cache, null: false
+      t.jsonb :subordinates_cache, null: false, array: true, default: []
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+      t.timestamps null: false
+    end
+  end
+end
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- Model
 
-## Contributing
+```
+class EmployeeCache < ApplicationRecord
+  belongs_to :employee
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cacheable_models. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+  validates :employee, presence: true
+  validates :cache, presence: true
+  validates :supervisor_cache, presence: true
+end
+```
+
+2. Configure model to be cached
+
+Firstly the original model must have a `has_many` relation to the cached one.
+Then, you can use:
+
+- `cache` to configure which attributes should be saved
+
+```
+class EmployeeCache < ApplicationRecord
+  cache :name, :id, :age, supervisor: [:name, :age], subordinates: [:name]
+end
+```
+
+- `custom_cache` to set mappings directly to the cached model (instead of the `cache` attribute inside it), this helps if you'd like to add more relations to the Cache model
+
+```
+class EmployeeCache < ApplicationRecord
+  custom_cache company_id: :company_id
+end
+```
+
+3. Use it!
+
+In the example developed here, calling `employee.cache!` should generate something like:
+
+```
+{
+  employee_id,
+  company_id,
+  cache: {
+    name,
+    id,
+    age
+  },
+  supervisor_cache: {
+    name,
+    age
+  },
+  subordinates_cache: [{
+    name
+  },
+  {
+    name
+  }]
+}
+```
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the CacheableModels project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/cacheable_models/blob/master/CODE_OF_CONDUCT.md).
