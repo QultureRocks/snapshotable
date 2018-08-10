@@ -61,7 +61,7 @@ module Snapshotable
     end
 
     def custom_snapshot_attributes
-      @custom_snapshot_attributes ||= record.class.custom_snapshot_attributes
+      @custom_snapshot_attributes ||= record.class.custom_snapshot_attributes.first
     end
   end
 end

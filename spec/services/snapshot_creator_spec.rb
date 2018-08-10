@@ -135,26 +135,26 @@ RSpec.describe Snapshotable::SnapshotCreator do
 
     context 'when has custom attributes' do
       let(:attributes_to_save_on_snapshot) { [] }
-      let(:custom_snapshot_attributes) { { role_in_kingdom: :role } }
+      let(:custom_snapshot_attributes) { [ role_in_kingdom: :role] }
 
       before do
         allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
 
-        custom_snapshot_attributes.each_value do |attribute|
+        custom_snapshot_attributes.first.each_value do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
       end
 
       it 'returns an object with the custom attribute set' do
-        expect(subject.keys).to match_array(custom_snapshot_attributes.keys)
+        expect(subject.keys).to match_array(custom_snapshot_attributes.first.keys)
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject.keys).to match_array(custom_snapshot_attributes.keys)
+        expect(subject.keys).to match_array(custom_snapshot_attributes.first.keys)
       end
 
       it 'returns the same parameters as the record' do
-        custom_snapshot_attributes.each do |custom_name, attribute|
+        custom_snapshot_attributes.first.each do |custom_name, attribute|
           expect(subject[custom_name]).to be(fake_model[attribute])
         end
       end
