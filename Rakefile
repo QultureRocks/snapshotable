@@ -1,5 +1,5 @@
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.libs << 'lib'
@@ -8,4 +8,4 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = true
 end
 
-task :default => :spec
+task default: :spec

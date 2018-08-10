@@ -21,7 +21,7 @@ module CacheableModels
         association = record.send(association_name)
 
         cached_attributes["#{association_name}_cache"] = if association.respond_to?(:map)
-                                                           association.map{ |model| extract_attributes(attributes, model) }
+                                                           association.map { |model| extract_attributes(attributes, model) }
                                                          else
                                                            extract_attributes(attributes, association)
                                                          end
@@ -39,11 +39,11 @@ module CacheableModels
     end
 
     def record_cached_attrs
-      @record_cached_attrs ||= record.attributes_to_cache.select{|attr| attr.is_a? Symbol }
+      @record_cached_attrs ||= record.attributes_to_cache.select { |attr| attr.is_a? Symbol }
     end
 
     def deep_cached_attrs
-      @deep_cached_attrs ||= record.attributes_to_cache.select{|attr| attr.is_a? Hash }.first
+      @deep_cached_attrs ||= record.attributes_to_cache.select { |attr| attr.is_a? Hash }.first
     end
   end
 end

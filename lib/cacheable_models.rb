@@ -1,12 +1,11 @@
 require 'services/cache_attributes'
 
 module CacheableModels
-
   def self.included(base)
     base.class_eval do
       extend ClassMethods
-      class_attribute :attributes_to_cache, :instance_writer => false
-      class_attribute :attributes_to_ignore_on_diff, :instance_writer => false
+      class_attribute :attributes_to_cache, instance_writer: false
+      class_attribute :attributes_to_ignore_on_diff, instance_writer: false
 
       self.attributes_to_cache = []
       self.attributes_to_ignore_on_diff = []
