@@ -40,7 +40,6 @@ RSpec.describe Snapshotable::SnapshotCreator do
       let(:attributes_to_save_on_snapshot) { %i[id name] }
 
       before do
-
         attributes_to_save_on_snapshot.each do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
