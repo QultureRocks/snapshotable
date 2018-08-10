@@ -19,12 +19,12 @@ module Snapshotable
         snapshot[key] = record.send(attribute)
       end
 
-      snapshot[:attributes] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
+      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
 
       deep_snapshot_attrs&.each do |association_name, attributes|
         association = record.send(association_name)
 
-        snapshot["#{association_name}_attributes"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
+        snapshot["#{association_name}_object"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
                                                            association.map { |model| extract_attributes(attributes, model) }
                                                          else
                                                            extract_attributes(attributes, association)

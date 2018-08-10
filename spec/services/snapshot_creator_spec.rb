@@ -47,16 +47,16 @@ RSpec.describe Snapshotable::SnapshotCreator do
       end
 
       it 'returns an object with attributes set' do
-        expect(subject).to have_key(:attributes)
+        expect(subject).to have_key(:object)
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject[:attributes].keys).to match_array(attributes_to_save_on_snapshot)
+        expect(subject[:object].keys).to match_array(attributes_to_save_on_snapshot)
       end
 
       it 'returns the same parameters as the record' do
         attributes_to_save_on_snapshot.each do |attribute|
-          expect(subject[:attributes][attribute]).to be(fake_model[attribute])
+          expect(subject[:object][attribute]).to be(fake_model[attribute])
         end
       end
     end
@@ -77,8 +77,8 @@ RSpec.describe Snapshotable::SnapshotCreator do
         end
       end
 
-      it 'returns an object with relation_attributes set' do
-        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_attributes" })
+      it 'returns an object with relation_object set' do
+        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_object" })
       end
 
       it 'returns the cache with only the asked parameters' do
@@ -88,7 +88,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
       it 'returns the same parameters as the record' do
         attributes_to_save_on_snapshot.first.each do |association_name, attributes|
           attributes.each do |attribute|
-            expect(subject["#{association_name}_attributes"][attribute]).to be(fake_model[association_name][attribute])
+            expect(subject["#{association_name}_object"][attribute]).to be(fake_model[association_name][attribute])
           end
         end
       end
@@ -113,8 +113,8 @@ RSpec.describe Snapshotable::SnapshotCreator do
         end
       end
 
-      it 'returns an object with record_attributes set' do
-        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_attributes" })
+      it 'returns an object with record_object set' do
+        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_object" })
       end
 
       it 'returns the cache with only the asked parameters' do
@@ -123,7 +123,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
 
       it 'returns the same parameters as the record' do
         attributes_to_save_on_snapshot.first.each do |association_name, attributes|
-          subject["#{association_name}_attributes"].each_with_index do |cache, index|
+          subject["#{association_name}_object"].each_with_index do |cache, index|
             attributes.each do |attribute|
               expect(cache[attribute]).to be(fake_model[association_name][index][attribute])
             end
