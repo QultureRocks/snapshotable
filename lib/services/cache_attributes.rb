@@ -15,6 +15,10 @@ module CacheableModels
     def cache_attrs
       cached_attributes = {}
 
+      record.custom_cache_attributes.each do |key, attribute|
+        cached_attributes[key] = record.send(attribute)
+      end
+
       cached_attributes[:cache] = extract_attributes(record_cached_attrs, record) if record_cached_attrs.any?
 
       deep_cached_attrs&.each do |association_name, attributes|

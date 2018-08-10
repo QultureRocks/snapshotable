@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'activesupport', '>= 4.1'
+  s.add_runtime_dependency 'hashdiff'
 
   s.add_development_dependency 'bundler', '~> 1.16'
   s.add_development_dependency 'rake', '~> 10.0'
