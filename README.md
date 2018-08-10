@@ -95,11 +95,7 @@ In this case, the model won't change, but you could modify it manually if you wi
 
 ### Setting the base model
 
-After creating the Snapshot model, add a `has_many` relation to the base model
-```
-has_many user_snapshots, dependent: :destroy
-```
-Then, set which attributes should be saved on the Snapshot using `snapshot` on the model
+Set which attributes should be saved on the Snapshot using `snapshot` on the model
 ```
 snapshot :id, :name, :age, profile: [:description], photo: [:url], groups: [:name], friends: [:name, :age]
 ```
