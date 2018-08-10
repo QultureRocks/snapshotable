@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Snapshotable
   class SnapshotCreator
     def initialize(record)
@@ -15,23 +17,31 @@ module Snapshotable
     def snapshot_attrs
       snapshot = {}
 
+      add_custom_attributes(snapshot) if custom_snapshot_attributes.any?
+
+      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
+
+      add_deep_snapshot_objects(snapshot)
+
+      snapshot
+    end
+
+    def add_custom_attributes(snapshot)
       record.custom_snapshot_attributes.each do |key, attribute|
         snapshot[key] = record.send(attribute)
       end
+    end
 
-      snapshot[:attributes] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
-
+    def add_deep_snapshot_objects(snapshot)
       deep_snapshot_attrs&.each do |association_name, attributes|
         association = record.send(association_name)
 
-        snapshot["#{association_name}_attributes"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
-                                                           association.map { |model| extract_attributes(attributes, model) }
-                                                         else
-                                                           extract_attributes(attributes, association)
-                                                         end
+        snapshot["#{association_name}_object"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
+                                                   association.map { |model| extract_attributes(attributes, model) }
+                                                 else
+                                                   extract_attributes(attributes, association)
+                                                 end
       end
-
-      snapshot
     end
 
     def extract_attributes(attributes, model)
@@ -48,6 +58,10 @@ module Snapshotable
 
     def deep_snapshot_attrs
       @deep_snapshot_attrs ||= record.attributes_to_save_on_snapshot.select { |attr| attr.is_a? Hash }.first
+    end
+
+    def custom_snapshot_attributes
+      @custom_snapshot_attributes ||= record.custom_snapshot_attributes
     end
   end
 end

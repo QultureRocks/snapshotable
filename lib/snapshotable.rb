@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
 require 'services/snapshot_creator'
 
 module Snapshotable
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/BlockLength
   def self.included(base)
     base.class_eval do
       extend ClassMethods
@@ -41,6 +46,9 @@ module Snapshotable
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/BlockLength
 
   module ClassMethods
     def snapshot(*attributes)

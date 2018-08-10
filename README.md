@@ -41,8 +41,8 @@ class CreateContractSnapshots < ActiveRecord::Migration
       # model to be snapshoted
       t.references :user, index: true, null: false, foreign_key: true
 
-      # snapshoted_attributes
-      t.jsonb :attributes, null: false
+      # snapshoted_object
+      t.jsonb :object, null: false
       t.timestamps null: false
     end
   end
@@ -55,7 +55,7 @@ class UserSnapshot < ApplicationRecord
   belongs_to :user
 
   validates :user, presence: true
-  validates :attributes, presence: true
+  validates :object, presence: true
 end
 ```
 
@@ -77,13 +77,13 @@ class CreateContractSnapshots < ActiveRecord::Migration
       t.references :user, index: true, null: false, foreign_key: true
 
       # snapshoted_attributes
-      t.jsonb :attributes, null: false
+      t.jsonb :object, null: false
       
-      t.jsonb :profile_attributes, null: false
-      t.jsonb :photo_attributes, null: false
+      t.jsonb :profile_object, null: false
+      t.jsonb :photo_object, null: false
 
-      t.jsonb :groups_attributes, null: false, array: true, default: []
-      t.jsonb :friends_attributes, null: false, array: true, default: []
+      t.jsonb :groups_object, null: false, array: true, default: []
+      t.jsonb :friends_object, null: false, array: true, default: []
 
       t.timestamps null: false
     end
@@ -112,24 +112,24 @@ In the example above a `UserSnapshot` would be created like this:
 ```
 {
   user_id: user.id,
-  attributes: {
+  object: {
     id: user.id,
     name: user.name,
     age: user.age
   },
-  profile_attributes: {
+  profile_object: {
     description: user.profile.description
   },
-  photo_attributes: {
+  photo_object: {
     url: user.photo.url
   },
-  groups_attributes: [{
+  groups_object: [{
     name: user.groups.first.name
   },
   {
     name: user.groups.second.name
   }],
-  friends_attributes: [{
+  friends_object: [{
     name: user.friends.first.name,
     age: user.friends.first.age
   },
