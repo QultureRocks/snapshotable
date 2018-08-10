@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cacheable_models (0.0.0)
+    cacheable_models (0.0.1)
       activesupport (>= 4.1)
       hashdiff
 
