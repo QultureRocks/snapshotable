@@ -9,7 +9,7 @@ module CacheableModels
       class_attribute :custom_cache_attributes, instance_writer: false
 
       self.attributes_to_cache = []
-      self.attributes_to_ignore_on_diff = []
+      self.attributes_to_ignore_on_diff = ['id', 'created_at', 'updated_at']
       self.custom_cache_attributes = {}
 
       unless instance_methods.include?(:cache!)
@@ -48,7 +48,7 @@ module CacheableModels
     end
 
     def cache_ignore_diff(*attributes)
-      self.attributes_to_ignore_on_diff = attributes.map(&:to_s)
+      self.attributes_to_ignore_on_diff = self.attributes_to_ignore_on_diff + attributes.map(&:to_s)
     end
 
     def custom_cache(*attributes)
