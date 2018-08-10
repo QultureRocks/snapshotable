@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.files = Dir['LICENSE.txt', 'README.md', 'lib/**/*']
   s.require_paths = ['lib']
 
+  s.required_ruby_version = '>= 2.1.7'
+
   s.add_runtime_dependency 'activesupport', ['>= 4.1', '< 6']
   s.add_runtime_dependency 'hashdiff', ['>= 0.3', '< 1']
 

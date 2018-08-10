@@ -137,7 +137,7 @@ RSpec.describe CacheableModels::CacheAttributes do
 
     context 'when has custom attributes' do
       let(:attributes_to_cache) { [] }
-      let(:custom_cache_attributes) { {role_in_kingdom: :role} }
+      let(:custom_cache_attributes) { { role_in_kingdom: :role } }
 
       before do
         allow(record).to receive(:custom_cache_attributes).and_return(custom_cache_attributes)
