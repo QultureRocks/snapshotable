@@ -4,7 +4,7 @@ require 'pry-rails'
 require 'active_support'
 require 'active_support/core_ext/string/strip'
 
-require 'cacheable_models'
+require 'snapshotable'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

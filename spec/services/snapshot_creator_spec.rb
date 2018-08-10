@@ -1,6 +1,7 @@
-RSpec.describe CacheableModels::CacheAttributes do
+RSpec.describe Snapshotable::SnapshotCreator do
   let(:record) { double }
 
+  let(:custom_snapshot_attributes) { [] }
   let(:fake_model) do
     {
       id: 1,
@@ -27,46 +28,44 @@ RSpec.describe CacheableModels::CacheAttributes do
   end
 
   before do
-    allow(record).to receive(:attributes_to_cache).and_return(attributes_to_cache)
+    allow(record).to receive(:attributes_to_save_on_snapshot).and_return(attributes_to_save_on_snapshot)
+    allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
     allow(record).to receive(:blank?).and_return(false)
   end
 
   describe '#call' do
     subject { described_class.new(record).call }
 
-    context 'when only has first-level caching' do
-      let(:attributes_to_cache) { %i[id name] }
+    context 'when only has first-level attributes' do
+      let(:attributes_to_save_on_snapshot) { %i[id name] }
 
       before do
-        allow(record).to receive(:custom_cache_attributes).and_return([])
 
-        attributes_to_cache.each do |attribute|
+        attributes_to_save_on_snapshot.each do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
       end
 
-      it 'returns an object with cache set' do
-        expect(subject).to have_key(:cache)
+      it 'returns an object with attributes set' do
+        expect(subject).to have_key(:attributes)
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject[:cache].keys).to match_array(attributes_to_cache)
+        expect(subject[:attributes].keys).to match_array(attributes_to_save_on_snapshot)
       end
 
       it 'returns the same parameters as the record' do
-        attributes_to_cache.each do |attribute|
-          expect(subject[:cache][attribute]).to be(fake_model[attribute])
+        attributes_to_save_on_snapshot.each do |attribute|
+          expect(subject[:attributes][attribute]).to be(fake_model[attribute])
         end
       end
     end
 
-    context 'when has second-level caching' do
-      let(:attributes_to_cache) { [mother: [:name], father: [:id]] }
+    context 'when has second-level attributes' do
+      let(:attributes_to_save_on_snapshot) { [mother: [:name], father: [:id]] }
 
       before do
-        allow(record).to receive(:custom_cache_attributes).and_return([])
-
-        attributes_to_cache.first.each do |association_name, attributes|
+        attributes_to_save_on_snapshot.first.each do |association_name, attributes|
           association = fake_model[association_name]
 
           allow(record).to receive(association_name).and_return(association)
@@ -78,30 +77,28 @@ RSpec.describe CacheableModels::CacheAttributes do
         end
       end
 
-      it 'returns an object with attribute_cache set' do
-        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map { |key| "#{key}_cache" })
+      it 'returns an object with relation_attributes set' do
+        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_attributes" })
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject.values.map(&:keys)).to match_array(attributes_to_cache.first.values)
+        expect(subject.values.map(&:keys)).to match_array(attributes_to_save_on_snapshot.first.values)
       end
 
       it 'returns the same parameters as the record' do
-        attributes_to_cache.first.each do |association_name, attributes|
+        attributes_to_save_on_snapshot.first.each do |association_name, attributes|
           attributes.each do |attribute|
-            expect(subject["#{association_name}_cache"][attribute]).to be(fake_model[association_name][attribute])
+            expect(subject["#{association_name}_attributes"][attribute]).to be(fake_model[association_name][attribute])
           end
         end
       end
     end
 
-    context 'when has second-level caching with a multiple association' do
-      let(:attributes_to_cache) { [houses: [:name]] }
+    context 'when has second-level attributes with a multiple association' do
+      let(:attributes_to_save_on_snapshot) { [houses: [:name]] }
 
       before do
-        allow(record).to receive(:custom_cache_attributes).and_return([])
-
-        attributes_to_cache.first.each do |association_name, attributes|
+        attributes_to_save_on_snapshot.first.each do |association_name, attributes|
           multiple_association = fake_model[association_name]
 
           allow(record).to receive(association_name).and_return(multiple_association)
@@ -116,17 +113,17 @@ RSpec.describe CacheableModels::CacheAttributes do
         end
       end
 
-      it 'returns an object with attribute_cache set' do
-        expect(subject.keys).to match_array(attributes_to_cache.first.keys.map { |key| "#{key}_cache" })
+      it 'returns an object with record_attributes set' do
+        expect(subject.keys).to match_array(attributes_to_save_on_snapshot.first.keys.map { |key| "#{key}_attributes" })
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject.values.first.map(&:keys).uniq).to match_array(attributes_to_cache.first.values)
+        expect(subject.values.first.map(&:keys).uniq).to match_array(attributes_to_save_on_snapshot.first.values)
       end
 
       it 'returns the same parameters as the record' do
-        attributes_to_cache.first.each do |association_name, attributes|
-          subject["#{association_name}_cache"].each_with_index do |cache, index|
+        attributes_to_save_on_snapshot.first.each do |association_name, attributes|
+          subject["#{association_name}_attributes"].each_with_index do |cache, index|
             attributes.each do |attribute|
               expect(cache[attribute]).to be(fake_model[association_name][index][attribute])
             end
@@ -136,27 +133,27 @@ RSpec.describe CacheableModels::CacheAttributes do
     end
 
     context 'when has custom attributes' do
-      let(:attributes_to_cache) { [] }
-      let(:custom_cache_attributes) { { role_in_kingdom: :role } }
+      let(:attributes_to_save_on_snapshot) { [] }
+      let(:custom_snapshot_attributes) { { role_in_kingdom: :role } }
 
       before do
-        allow(record).to receive(:custom_cache_attributes).and_return(custom_cache_attributes)
+        allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
 
-        custom_cache_attributes.values.each do |attribute|
+        custom_snapshot_attributes.values.each do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
       end
 
       it 'returns an object with the custom attribute set' do
-        expect(subject.keys).to match_array(custom_cache_attributes.keys)
+        expect(subject.keys).to match_array(custom_snapshot_attributes.keys)
       end
 
       it 'returns the cache with only the asked parameters' do
-        expect(subject.keys).to match_array(custom_cache_attributes.keys)
+        expect(subject.keys).to match_array(custom_snapshot_attributes.keys)
       end
 
       it 'returns the same parameters as the record' do
-        custom_cache_attributes.each do |custom_name, attribute|
+        custom_snapshot_attributes.each do |custom_name, attribute|
           expect(subject[custom_name]).to be(fake_model[attribute])
         end
       end

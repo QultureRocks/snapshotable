@@ -1,16 +1,16 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'cacheable_models/version'
+require 'snapshotable/version'
 
 Gem::Specification.new do |s|
-  s.name          = 'cacheable_models'
-  s.version       = CacheableModels::VERSION
+  s.name          = 'snapshotable'
+  s.version       = Snapshotable::VERSION
   s.authors       = ['João Batista Marinho', 'Manuel Puyol']
   s.email         = 'engineering@qulture.rocks'
 
   s.summary       = 'Caches a model in a time period.'
   s.description   = 'Caches a model in a time period'
-  s.homepage      = 'https://github.com/QultureRocks/cacheable_models'
+  s.homepage      = 'https://github.com/QultureRocks/snapshotable'
   s.license       = 'MIT'
 
   s.files = Dir['LICENSE.txt', 'README.md', 'lib/**/*']
