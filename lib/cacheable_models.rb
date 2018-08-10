@@ -1,6 +1,6 @@
 require 'services/cache_attributes'
 
-module Cacheable
+module CacheableModels
 
   def self.included(base)
     base.class_eval do

@@ -1,9 +1,9 @@
 $:.push File.expand_path('../lib', __FILE__)
-require 'cacheable/version'
+require 'cacheable_models/version'
 
 Gem::Specification.new do |s|
-  s.name = 'cacheable'
-  s.version = Cacheable::VERSION.dup
+  s.name = 'cacheable_models'
+  s.version = CacheableModels::VERSION.dup
   s.summary = 'Caches a model in a time period.'
   s.email = 'engineering@qulture.rocks'
   s.description = 'Caches a model in a time period.'
