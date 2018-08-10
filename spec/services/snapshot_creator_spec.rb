@@ -30,8 +30,8 @@ RSpec.describe Snapshotable::SnapshotCreator do
   end
 
   before do
-    allow(record).to receive(:attributes_to_save_on_snapshot).and_return(attributes_to_save_on_snapshot)
-    allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
+    allow(record.class).to receive(:attributes_to_save_on_snapshot).and_return(attributes_to_save_on_snapshot)
+    allow(record.class).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
     allow(record).to receive(:blank?).and_return(false)
   end
 

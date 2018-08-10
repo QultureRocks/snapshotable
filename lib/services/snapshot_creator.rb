@@ -17,9 +17,9 @@ module Snapshotable
     def snapshot_attrs
       snapshot = {}
 
-      add_custom_attributes(snapshot) if custom_snapshot_attributes.present?
+      add_custom_attributes(snapshot) if custom_snapshot_attributes&.any?
 
-      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.present?
+      snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
 
       add_deep_snapshot_objects(snapshot)
 
@@ -61,7 +61,7 @@ module Snapshotable
     end
 
     def custom_snapshot_attributes
-      @custom_snapshot_attributes ||= record.class.custom_snapshot_attributes.first
+      @custom_snapshot_attributes ||= record.class.custom_snapshot_attributes
     end
   end
 end
