@@ -1,0 +1,21 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - 'lib/generators/snapshotable/templates/*'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/LineLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false

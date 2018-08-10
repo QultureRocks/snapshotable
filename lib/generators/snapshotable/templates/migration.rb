@@ -6,9 +6,9 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
 
       # snapshoted_attributes
       t.jsonb :attributes, null: false
-<% has_one.each do |relation| %>
+<% relations_has_one.each do |relation| %>
       t.jsonb :<%= relation.underscore %>_attributes, null: false<% end %>
-<% has_many.each do |relation| %>
+<% relations_has_many.each do |relation| %>
       t.jsonb :<%= relation.underscore %>_attributes, null: false, array: true, default: []<% end %>
 
       t.timestamps null: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails/generators'
 require 'rails/generators/migration'
 require 'active_record'
@@ -30,20 +32,18 @@ module Snapshotable
       end
 
       def migration_version
-        if ActiveRecord::VERSION::MAJOR >= 5
-          "[#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}]"
-        end
+        "[#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}]" if ActiveRecord::VERSION::MAJOR >= 5
       end
 
       def active_record_class
         ActiveRecord::VERSION::MAJOR >= 5 ? 'ApplicationRecord' : 'ActiveRecord::Base'
       end
 
-      def has_one
+      def relations_has_one
         options['has_one']
       end
 
-      def has_many
+      def relations_has_many
         options['has_many']
       end
 

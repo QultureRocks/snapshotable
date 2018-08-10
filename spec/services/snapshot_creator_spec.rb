@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Snapshotable::SnapshotCreator do
   let(:record) { double }
 
@@ -138,7 +140,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
       before do
         allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
 
-        custom_snapshot_attributes.values.each do |attribute|
+        custom_snapshot_attributes.each_value do |attribute|
           allow(record).to receive(attribute).and_return(fake_model[attribute])
         end
       end
