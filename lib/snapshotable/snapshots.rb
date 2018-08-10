@@ -30,7 +30,7 @@ module Snapshotable
     module InstanceMethods
       def take_snapshot!
         snapshot = SnapshotCreator.new(self).call
-        snapshot_class.create!(snapshot) if should_create_new_snapshot?(snapshots&.last)
+        snapshot_class.create!(snapshot) if should_create_new_snapshot?(snapshot)
       end
 
       def snapshots
@@ -42,11 +42,12 @@ module Snapshotable
       end
 
       def should_create_new_snapshot?(snapshot)
-        return true if snapshot.nil?
+        last_snapshot = snapshots.last
+        return true if last_snapshot.nil?
 
-        snapshot_to_compare = snapshot
+        snapshot_to_compare = last_snapshot
                               .attributes
-                              .except(*attributes_to_ignore_on_diff)
+                              .except(*self.class.attributes_to_ignore_on_diff)
                               .with_indifferent_access
 
         HashDiff.diff(snapshot_to_compare, snapshot.with_indifferent_access).any?
