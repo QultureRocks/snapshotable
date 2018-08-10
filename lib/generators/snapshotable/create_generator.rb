@@ -14,6 +14,11 @@ module Snapshotable
       class_option :has_one, type: :array, default: [], desc: 'has_one relations to add to the snapshot'
       class_option :has_many, type: :array, default: [], desc: 'has_many relations to add to the snapshot'
 
+      def generate_migration_and_model
+        migration_template "migration.rb", "db/migrate/create_#{snapshotable_model}_snapshots.rb", migration_version: migration_version
+        template "model.rb", "app/models/#{model_underscored}_snapshot.rb"
+      end
+
       # Implement the required interface for Rails::Generators::Migration.
       def self.next_migration_number(dirname) #:nodoc:
         next_migration_number = current_migration_number(dirname) + 1
@@ -24,14 +29,14 @@ module Snapshotable
         end
       end
 
-      def copy_migration
-        migration_template "create.rb", "db/migrate/create_#{snapshotable_model}_snapshots.rb", migration_version: migration_version
-      end
-
       def migration_version
         if ActiveRecord::VERSION::MAJOR >= 5
           "[#{ActiveRecord::VERSION::MAJOR}.#{ActiveRecord::VERSION::MINOR}]"
         end
+      end
+
+      def active_record_class
+        ActiveRecord::VERSION::MAJOR >= 5 ? 'ApplicationRecord' : 'ActiveRecord::Base'
       end
 
       def has_one
@@ -40,6 +45,14 @@ module Snapshotable
 
       def has_many
         options['has_many']
+      end
+
+      def model_underscored
+        snapshotable_model.underscore
+      end
+
+      def model_camelcased
+        snapshotable_model.camelcase
       end
     end
   end
