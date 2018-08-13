@@ -15,9 +15,9 @@ module Snapshotable
     attr_reader :record
 
     def snapshot_attrs
-      snapshot = {
-        "#{record.snapshot_foreign_key}": record.id
-      }
+      snapshot = {}
+
+      snapshot["#{record.snapshot_foreign_key}"] = record.id unless record.snapshot_foreign_key.nil?
 
       add_custom_attributes(snapshot) if custom_snapshot_attributes&.any?
 
