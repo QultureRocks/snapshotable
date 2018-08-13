@@ -2,6 +2,8 @@ AllCops:
   TargetRubyVersion: 2.3
   Exclude:
     - 'lib/generators/snapshotable/templates/*'
+    - 'spec/dummy/db/schema.rb'
+    - 'vendor/**/*'
 
 Metrics/ModuleLength:
   Exclude:
