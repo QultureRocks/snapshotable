@@ -12,11 +12,14 @@ require 'active_support/core_ext/string/strip'
 require File.expand_path("dummy/config/environment", __dir__)
 require "rspec/rails"
 
+require 'factory_bot_rails'
 require 'snapshotable'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
+
+  config.include FactoryBot::Syntax::Methods
 
   config.use_transactional_fixtures = true
 
