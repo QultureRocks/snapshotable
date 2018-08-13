@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'snapshotable/snapshots'
+require 'snapshotable/model'
 
 module Snapshotable
   class << self
