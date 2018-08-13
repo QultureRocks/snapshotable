@@ -37,6 +37,10 @@ module Snapshotable
         send(snapshot_association_name)
       end
 
+      def last_snapshot_before(time)
+        snapshots.order(created_at: :desc).where('created_at < ?', time).first
+      end
+
       def snapshot_class
         Object.const_get(snapshot_class_name)
       end
