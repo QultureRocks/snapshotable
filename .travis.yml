@@ -1,13 +1,13 @@
-sudo: false
 language: ruby
+cache: bundler
+before_install: gem install bundler -v 1.16.1
+sudo: false
+
 rvm:
   - 2.3.4
-before_install: gem install bundler -v 1.16.1
-cache: bundler
+
 services:
   - postgresql
-script:
-  - bundle exec rake db:setup
-  - bundle exec rake spec
+
 addons:
   postgresql: "9.4"
