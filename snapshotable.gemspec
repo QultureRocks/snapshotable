@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors       = ['João Batista Marinho', 'Manuel Puyol']
   s.email         = 'engineering@qulture.rocks'
 
-  s.summary       = 'Caches a model in a time period.'
-  s.description   = 'Caches a model in a time period'
+  s.summary       = 'Stores a model attributes in a time period.'
+  s.description   = 'Stores a model attributes in a time period'
   s.homepage      = 'https://github.com/QultureRocks/snapshotable'
   s.license       = 'MIT'
 
