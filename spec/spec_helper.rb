@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-ENV["RAILS_ENV"] = "test"
-ENV["DB"] = "postgresql"
+ENV['RAILS_ENV'] = 'test'
+ENV['DB'] = 'postgresql'
 
 require 'bundler/setup'
 require 'pry-rails'
@@ -9,8 +9,8 @@ require 'pry-rails'
 require 'active_support'
 require 'active_support/core_ext/string/strip'
 
-require File.expand_path("dummy/config/environment", __dir__)
-require "rspec/rails"
+require File.expand_path('dummy/config/environment', __dir__)
+require 'rspec/rails'
 
 require 'factory_bot_rails'
 require 'snapshotable'

@@ -5,5 +5,5 @@ class Person < ApplicationRecord
   has_one :father, class_name: Person.name, foreign_key: 'father_id'
   has_and_belongs_to_many :houses
 
-  snapshot :name, :role, :bastard, mother: [:name, :role], father: [:name, :role], houses: [:name]
+  snapshot :name, :role, :bastard, mother: %i[name role], father: %i[name role], houses: [:name]
 end

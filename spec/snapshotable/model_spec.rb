@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'helpers/test_model'
 
 RSpec.describe Snapshotable::Model do

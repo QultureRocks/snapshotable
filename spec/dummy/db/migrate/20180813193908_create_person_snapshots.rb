@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePersonSnapshots < ActiveRecord::Migration[5.0]
   def change
     create_table :person_snapshots do |t|
