@@ -17,18 +17,23 @@ module Snapshotable
     def snapshot_attrs
       snapshot = {}
 
-      snapshot["#{record.snapshot_foreign_key}"] = record.id unless record.snapshot_foreign_key.nil?
-
-      add_custom_attributes(snapshot) if custom_snapshot_attributes&.any?
-
       snapshot[:object] = extract_attributes(record_snapshot_attrs, record) if record_snapshot_attrs.any?
 
+      add_foreign_key(snapshot)
+      add_custom_attributes(snapshot)
       add_deep_snapshot_objects(snapshot)
 
       snapshot
     end
 
+    def add_foreign_key(snapshot)
+      return false if record.snapshot_foreign_key.nil?
+      snapshot[record.snapshot_foreign_key.to_s] = record.id
+    end
+
     def add_custom_attributes(snapshot)
+      return false unless custom_snapshot_attributes&.any?
+
       custom_snapshot_attributes.each do |key, attribute|
         snapshot[key] = record.send(attribute)
       end
