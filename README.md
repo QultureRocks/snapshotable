@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.com/QultureRocks/snapshotable.svg?branch=master)](https://travis-ci.com/QultureRocks/snapshotable)
 
 # Snapshotable
 

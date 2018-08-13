@@ -33,6 +33,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
     allow(record.class).to receive(:attributes_to_save_on_snapshot).and_return(attributes_to_save_on_snapshot)
     allow(record.class).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)
     allow(record).to receive(:blank?).and_return(false)
+    allow(record).to receive(:snapshot_foreign_key).and_return(nil)
   end
 
   describe '#call' do
@@ -135,7 +136,7 @@ RSpec.describe Snapshotable::SnapshotCreator do
 
     context 'when has custom attributes' do
       let(:attributes_to_save_on_snapshot) { [] }
-      let(:custom_snapshot_attributes) { [ role_in_kingdom: :role] }
+      let(:custom_snapshot_attributes) { [role_in_kingdom: :role] }
 
       before do
         allow(record).to receive(:custom_snapshot_attributes).and_return(custom_snapshot_attributes)

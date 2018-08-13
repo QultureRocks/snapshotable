@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors       = ['João Batista Marinho', 'Manuel Puyol']
   s.email         = 'engineering@qulture.rocks'
 
-  s.summary       = 'Caches a model in a time period.'
-  s.description   = 'Caches a model in a time period'
+  s.summary       = 'Stores a model attributes in a time period.'
+  s.description   = 'Stores a model attributes in a time period'
   s.homepage      = 'https://github.com/QultureRocks/snapshotable'
   s.license       = 'MIT'
 
@@ -25,8 +25,11 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'hashdiff', ['>= 0.3', '< 1']
 
   s.add_development_dependency 'bundler', '~> 1.16'
+  s.add_development_dependency 'factory_bot_rails', '~> 4.0'
+  s.add_development_dependency 'pg', '~> 0.21.0'
   s.add_development_dependency 'pry-rails', ['>= 0.3', '< 1']
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'rspec-rails', '~> 3.0'
   s.add_development_dependency 'rubocop', ['>= 0.3', '< 1']
 end

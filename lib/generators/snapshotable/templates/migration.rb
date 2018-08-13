@@ -4,12 +4,12 @@ class <%= migration_class_name %> < ActiveRecord::Migration<%= migration_version
       # model to be snapshoted
       t.references :<%= model_underscored %>, index: true, null: false, foreign_key: true
 
-      # snapshoted_attributes
-      t.jsonb :attributes, null: false
+      # snapshoted attributes
+      t.jsonb :object, null: false
 <% relations_has_one.each do |relation| %>
-      t.jsonb :<%= relation.underscore %>_attributes, null: false<% end %>
+      t.jsonb :<%= relation.underscore %>_object<% end %>
 <% relations_has_many.each do |relation| %>
-      t.jsonb :<%= relation.underscore %>_attributes, null: false, array: true, default: []<% end %>
+      t.jsonb :<%= relation.underscore %>_object, array: true, default: []<% end %>
 
       t.timestamps null: false
     end

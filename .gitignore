@@ -6,6 +6,11 @@
 /pkg/
 /spec/reports/
 /tmp/
+spec/dummy/db/*.sqlite3
+spec/dummy/db/*.sqlite3-journal
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/bin/
 
 # rspec failure tracking
 .rspec_status
