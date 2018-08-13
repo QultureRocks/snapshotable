@@ -2,6 +2,7 @@
 
 require 'services/snapshot_creator'
 require 'snapshotable/model_config'
+require 'hashdiff'
 
 module Snapshotable
   module Model
@@ -37,8 +38,12 @@ module Snapshotable
         send(snapshot_association_name)
       end
 
-      def last_snapshot_before(time)
+      def last_snapshot_before(time = Time.now)
         snapshots.order(created_at: :desc).where('created_at < ?', time).first
+      end
+
+      def last_snapshot
+        snapshots.order(created_at: :desc).first
       end
 
       def snapshot_class
@@ -46,7 +51,6 @@ module Snapshotable
       end
 
       def should_create_new_snapshot?(snapshot)
-        last_snapshot = snapshots.last
         return true if last_snapshot.nil?
 
         snapshot_to_compare = last_snapshot
