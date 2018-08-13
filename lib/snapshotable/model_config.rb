@@ -72,6 +72,9 @@ module Snapshotable
 
       @model.class_attribute :snapshot_class_name
       @model.snapshot_class_name = snapshot_class_name
+
+      @model.class_attribute :snapshot_foreign_key
+      @model.snapshot_foreign_key = snapshot_foreign_key
     end
 
     def setup_association(klass)
