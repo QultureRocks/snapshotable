@@ -1,13 +1,19 @@
 language: ruby
 cache: bundler
-before_install: gem install bundler -v 1.16.1
 sudo: false
 
 rvm:
   - 2.3.4
+
+env:
+  - RAILS_ENV=test
 
 services:
   - postgresql
 
 addons:
   postgresql: "9.4"
+
+before_install: gem install bundler -v 1.16.1
+before_script: ./prepare-db.sh
+after_script: ./scripts/clean-db.sh
