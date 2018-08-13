@@ -28,5 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-rails', ['>= 0.3', '< 1']
   s.add_development_dependency 'rake', '~> 10.0'
   s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'rspec-rails', '~> 3.0'
   s.add_development_dependency 'rubocop', ['>= 0.3', '< 1']
+  s.add_development_dependency "pg", "~> 0.21.0"
 end
