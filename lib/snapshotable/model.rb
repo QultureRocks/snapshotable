@@ -30,8 +30,8 @@ module Snapshotable
 
     module InstanceMethods
       def take_snapshot!(force = false)
-        record = self.dup
-        record.id = self.id
+        record = dup
+        record.id = id
 
         snapshot = SnapshotCreator.new(record).call
         snapshot_class.create!(snapshot) if force || should_create_new_snapshot?(snapshot)
