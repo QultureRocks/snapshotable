@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/QultureRocks/snapshotable.svg?branch=master)](https://travis-ci.com/QultureRocks/snapshotable)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b48c636138e1380abcb1/maintainability)](https://codeclimate.com/github/QultureRocks/snapshotable/maintainability)
 
 # Snapshotable
 
