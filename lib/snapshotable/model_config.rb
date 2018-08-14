@@ -14,7 +14,6 @@ module Snapshotable
       setup_snapshot_names
       setup_variables
       setup_association(@model)
-      setup_callback(@model)
 
       @model.send :include, ::Snapshotable::Model::InstanceMethods
     end
@@ -82,12 +81,6 @@ module Snapshotable
         klass.snapshot_association_name,
         class_name: klass.snapshot_class_name,
         dependent: :destroy
-      )
-    end
-
-    def setup_callback(klass)
-      klass.after_create(
-        :take_snapshot!
       )
     end
 
