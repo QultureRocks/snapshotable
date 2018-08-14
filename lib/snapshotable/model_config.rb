@@ -86,9 +86,10 @@ module Snapshotable
     end
 
     def setup_callback(klass)
-      klass.after_create(
-        :take_snapshot!
-      )
+      klass.after_create { |record|
+        take_snapshot!
+        clear_association_cache
+      }
     end
 
     def snapshot_class_name
