@@ -29,9 +29,12 @@ module Snapshotable
     end
 
     module InstanceMethods
-      def take_snapshot!
-        snapshot = SnapshotCreator.new(self).call
-        snapshot_class.create!(snapshot) if should_create_new_snapshot?(snapshot)
+      def take_snapshot!(force = false)
+        record = self.dup
+        record.id = self.id
+
+        snapshot = SnapshotCreator.new(record).call
+        snapshot_class.create!(snapshot) if force || should_create_new_snapshot?(snapshot)
       end
 
       def snapshots
