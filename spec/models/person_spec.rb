@@ -39,12 +39,8 @@ RSpec.describe Person do
 
   describe '#take_snapshot!' do
     it 'only creates if something has changed' do
-      expect { record.take_snapshot! }.to_not(change { PersonSnapshot.count })
-
-      record.update!(name: 'New name')
-      record.reload
-
       expect { record.take_snapshot! }.to change { PersonSnapshot.count }.by(1)
+      expect { record.take_snapshot! }.to_not(change { PersonSnapshot.count })
     end
   end
 end
