@@ -44,7 +44,7 @@ module Snapshotable
         association = record.send(association_name)
 
         snapshot["#{association_name}_object"] = if association.class.name == 'ActiveRecord::Associations::CollectionProxy'
-                                                   association.map { |model| extract_attributes(attributes, model) }
+                                                   association.order(:id).map { |model| extract_attributes(attributes, model) }
                                                  else
                                                    extract_attributes(attributes, association)
                                                  end

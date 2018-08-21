@@ -4,8 +4,8 @@ RSpec.describe Snapshotable::SnapshotCreator do
   let(:record) { create(:person, name: 'Jon Snow', role: 'King in the North', bastard: true, father: father, mother: mother, houses: [house_stark, house_targaryen]) }
   let(:father) { create(:person, name: 'Rhaegar Targaryen') }
   let(:mother) { create(:person, name: 'Lyanna Stark') }
-  let(:house_stark) { create(:house, name: 'Stark')}
-  let(:house_targaryen) { create(:house, name: 'Targaryen')}
+  let(:house_stark) { create(:house, name: 'Stark') }
+  let(:house_targaryen) { create(:house, name: 'Targaryen') }
   let(:record_key) { "#{record.class.name.downcase}_id" }
 
   let(:custom_snapshot_attributes) { [] }

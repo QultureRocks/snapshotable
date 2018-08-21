@@ -25,7 +25,7 @@ module Snapshotable
       def self.next_migration_number(dirname) #:nodoc:
         next_migration_number = current_migration_number(dirname) + 1
         if ActiveRecord::Base.timestamped_migrations
-          [Time.now.utc.strftime('%Y%m%d%H%M%S'), format('%.14d', next_migration_number)].max
+          [Time.zone.now.utc.strftime('%Y%m%d%H%M%S'), format('%.14d', next_migration_number)].max
         else
           format('%.3d', next_migration_number)
         end
