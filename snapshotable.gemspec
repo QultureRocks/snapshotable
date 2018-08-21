@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'hashdiff', ['>= 0.3', '< 1']
 
   s.add_development_dependency 'bundler', '~> 1.16'
-  s.add_development_dependency 'factory_bot_rails', '~> 4.0'
+  s.add_development_dependency 'factory_bot_rails', ['>= 4.0', '< 6']
   s.add_development_dependency 'pg', '~> 0.21.0'
   s.add_development_dependency 'pry-rails', ['>= 0.3', '< 1']
   s.add_development_dependency 'rake', '~> 10.0'
