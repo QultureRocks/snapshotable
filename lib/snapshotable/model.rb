@@ -38,7 +38,7 @@ module Snapshotable
         send(snapshot_association_name)
       end
 
-      def last_snapshot_before(time = Time.now)
+      def last_snapshot_before(time = Time.zone.now)
         snapshots.order(created_at: :desc).where('created_at < ?', time).first
       end
 
