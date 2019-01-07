@@ -28,6 +28,7 @@ module Snapshotable
 
     def add_foreign_key(snapshot)
       return false if record.snapshot_foreign_key.nil?
+
       snapshot[record.snapshot_foreign_key.to_s] = record.id
     end
 
