@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    snapshotable (0.1.8)
+    snapshotable (0.2.0)
       activerecord (>= 4.1, < 6.1)
       activesupport (>= 4.1, < 6.1)
       hashdiff (>= 0.3, < 1)
