@@ -58,7 +58,7 @@ module Snapshotable
                               .except(*self.class.attributes_to_ignore_on_diff)
                               .with_indifferent_access
 
-        HashDiff.diff(snapshot_to_compare, snapshot.with_indifferent_access).any?
+        Hashdiff.diff(snapshot_to_compare, snapshot.with_indifferent_access).any?
       end
     end
   end
