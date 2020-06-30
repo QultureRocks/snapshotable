@@ -11,6 +11,6 @@ services:
 addons:
   postgresql: "9.4"
 
-before_install: gem install bundler -v 1.16.1
+before_install: gem install bundler -v 1.17.3
 before_script: ./scripts/prepare-db.sh
 after_script: ./scripts/clean-db.sh
