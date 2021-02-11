@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.3.0'
 
-  s.add_runtime_dependency 'activerecord', ['>= 4.1', '< 6.1']
+  s.add_runtime_dependency 'activerecord', '>= 4.1', '< 6.2'
   s.add_runtime_dependency 'activesupport', ['>= 4.1', '< 6.1']
   s.add_runtime_dependency 'hashdiff', '>= 1', '< 2'
 
