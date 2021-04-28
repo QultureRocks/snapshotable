@@ -1,0 +1,33 @@
+version: 2
+registries:
+  rubygems-server-gems-contribsys-com:
+    type: rubygems-server
+    url: https://gems.contribsys.com
+    username: "${{secrets.RUBYGEMS_SERVER_GEMS_CONTRIBSYS_COM_USERNAME}}"
+    password: "${{secrets.RUBYGEMS_SERVER_GEMS_CONTRIBSYS_COM_PASSWORD}}"
+
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "23:00"
+    timezone: America/Sao_Paulo
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: bundler
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: activesupport
+    versions:
+    - 5.2.4.4
+    - 5.2.4.5
+  - dependency-name: actionview
+    versions:
+    - 5.2.4.4
+    - 5.2.4.5
+  - dependency-name: activerecord
+    versions:
+    - 5.2.4.4
+  registries:
+  - rubygems-server-gems-contribsys-com
